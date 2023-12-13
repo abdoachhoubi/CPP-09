@@ -1,42 +1,27 @@
 #pragma once
 
+#include <stack>
 #include <iostream>
-#include <string>
-#include <exception>
-#include <map>
 #include <fstream>
+#include <map>
 #include <sstream>
-#include <cstdlib>
+#include <string>
+#include <cctype>
 
-class BitcoinExchange {
-	public:
-		// Contructors & Destructor (Canonical form)
-		BitcoinExchange(const std::string &filename);
-		BitcoinExchange(const BitcoinExchange &other);
-		BitcoinExchange &operator=(const BitcoinExchange &other);
-		~BitcoinExchange();
+// Function to parse the data file and populate the provided map
+void parseDataFile(std::string inputFile, std::map<int, float> data);
 
-		class	InvalidFileException : public std::exception {
-			public:
-				virtual const char *what() const throw();
-		};
+// Function to find and calculate values based on the provided key and value string
+void findAndCalculate(std::map<int, float> data, int key, std::string val);
 
-		class	InvalidDateException : public std::exception {
-			public:
-				virtual const char *what() const throw();
-		};
+// Function to convert a key to a date string
+std::string keyToDate(int key);
 
-		class	InvalidRateException : public std::exception {
-			public:
-				virtual const char *what() const throw();
-		};
-	
-	private:
-		std::string						&filename;
-		std::map<std::string, double>	change_rate;
+// Function to parse data from a CSV file and populate the provided map
+void parseCsvData(std::map<int, float>& data);
 
-		void	readInputFile(std::string file);
-		void	parseFile(std::string file);
-		void	checkDates(std::string line);
-		void	printHistoryChange();
-};
+// Function to check if a given line is a header line
+bool isHeaderLine(std::string line);
+
+// Function to check the date format and perform necessary actions
+int checkDate(std::string& date, int key);

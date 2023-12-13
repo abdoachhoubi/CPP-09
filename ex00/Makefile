@@ -1,20 +1,18 @@
-SRCS = main.cpp BitcoinExchange.cpp
+SRC = main.cpp BitcoinExchange.cpp
 
-INCS = BitcoinExchange.hpp
+CC = c++ -std=c++98
+
+FLAGS = -Wall -Wextra -Werror
 
 NAME = btc
 
-CC = c++
-
-CFLAGS = -Wall -Wextra -Werror -std=c++98
-
 all: $(NAME)
 
-$(NAME): $(SRCS) $(INCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+$(NAME): $(SRC)
+	$(CC) $(FLAGS) $(SRC) -o $(NAME)
 
 clean:
-	rm -f $(NAME)
+	rm -rf $(NAME)
 
 fclean: clean
 
