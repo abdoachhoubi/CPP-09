@@ -24,19 +24,19 @@ T merge(T first, T sec)
 {
 	T merged;
 	
-	typename T::iterator fit = first.begin();
-	typename T::iterator sit = sec.begin();
-	while (fit != first.end() && sit != sec.end())
+	typename T::iterator first_it = first.begin();
+	typename T::iterator second_it = sec.begin();
+	while (first_it != first.end() && second_it != sec.end())
 	{
-		if (*fit <= *sit)
-			merged.push_back(*fit++);
+		if (*first_it <= *second_it)
+			merged.push_back(*first_it++);
 		else
-			merged.push_back(*sit++);
+			merged.push_back(*second_it++);
 	}
-	if (fit != first.end() )
-		merged.insert(merged.end(), fit, first.end());
+	if (first_it != first.end() )
+		merged.insert(merged.end(), first_it, first.end());
 	else
-		merged.insert(merged.end(), sit, sec.end());
+		merged.insert(merged.end(), second_it, sec.end());
 
 	return merged;
 }
@@ -67,14 +67,14 @@ int main(int ac, char **av)
 	std::vector<int> vec;
 	std::deque<int> dq;
 	fillContainer(vec, dq, ac, av);
-	std::cout << "Before:  " ;
+	std::cout << "Before:	" ;
 	for (size_t i = 0; i < vec.size(); ++i)
 		std::cout << " " << vec[i];
 	std::cout << std::endl;
 	v_start = clock();
 	vec = mergeVec(vec);
 	v_end = clock();
-	std::cout << "After :  " ;
+	std::cout << "After :	" ;
 	for (size_t i = 0; i < vec.size(); ++i)
 		std::cout << " " << vec[i];
 	std::cout << std::endl;

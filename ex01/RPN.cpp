@@ -1,24 +1,54 @@
 #include "RPN.hpp"
 
-void parseRPN(int ac, char **av)
+RPN::RPN() {}
+
+RPN::RPN(RPN const &other) : _stack(other._stack) {}
+
+RPN &RPN::operator=(RPN const &other)
 {
-	int digits = 0;
-	int oper = 0;
-	if (ac != 2)
+	if (this != &other)
+		_stack = other._stack;
+	return *this;
+}
+
+RPN::~RPN() {}
+
+float RPN::doOpeartion(float num1, float num2, char op)
+{
+	return (op == '+' ? num1 + num2 : op == '-' ? num1 - num2
+								  : op == '*'	? num1 * num2
+												: num1 / num2);
+}
+
+void RPN::calcule(std::string line)
+{
+	char token;
+
+	for (size_t i = 0; i < line.length(); i++)
 	{
-		std::cout<< "Error: Wrong arguments!" << std::endl;
-		exit(0);
-	}
-	for (int i = 0; av[1][i]; i++)
-	{
-		if (!isdigit(av[1][i]) && !isblank(av[1][i]) && av[1][i] != '/' && av[1][i] != '*' && av[1][i] != '-' && av[1][i] != '+')
+		token = line[i];
+		if (token == ' ')
+			continue;
+		if (isdigit(token))
 		{
-			std::cout << "Error: program supports numbers and /*-+ only!" << std::endl;
-			exit (0);
+			_stack.push(token - '0');
 		}
-		if(isdigit(av[1][i]))
-			digits++;
-		else if (av[1][i] == '/' || av[1][i] == '*' || av[1][i] == '-' || av[1][i] == '+' )
-			oper++;
+		else if ((token == '+' || token == '-' || token == '*' || token == '/') && _stack.size() >= 2)
+		{
+			float num1 = _stack.top();
+			_stack.pop();
+			float num2 = _stack.top();
+			_stack.pop();
+			_stack.push(doOpeartion(num2, num1, token));
+		}
+		else
+		{
+			std::cout << "Error" << std::endl;
+			return;
+		}
 	}
+	if (_stack.size() == 1)
+		std::cout << _stack.top() << std::endl;
+	else
+		std::cout << "Error" << std::endl;
 }
